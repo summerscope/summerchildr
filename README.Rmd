@@ -1,0 +1,25 @@
+---
+title: "README"
+output: 
+  github_document:
+    toc: yes
+---
+
+
+1. Clone this repo:
+
+```
+git clone XXXX
+```
+
+2. Open a terminal and go to the directory of the repository 
+
+```
+cd XXXX
+```
+
+3. Run the app:
+
+```
+make run
+```
