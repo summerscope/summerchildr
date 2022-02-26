@@ -5,20 +5,21 @@ output:
     toc: yes
 ---
 
+# Run Summer Child app 
+
+## From RStudio
+
+```
+devtools::install_github("summerscope/summer-child-r")
+
+library(SummerChildR)
+```
 
 1. Clone this repo:
 
-```
-git clone XXXX
-```
 
-2. Open a terminal and go to the directory of the repository 
 
-```
-cd XXXX
-```
-
-3. Run the app:
+## From the terminal
 
 ```
 make run
