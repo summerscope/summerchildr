@@ -2,14 +2,16 @@
 #' @import dplyr
 #' @import tidyr
 #' @import stringr
+#' @importFrom magrittr %>%
 
 import_json_for_shinysurvey <- function(){
 
   # Question logic
   # question_logic <- get0("dat", envir = asNamespace("SummerChild"))
-  question_logic <- jsonlite::fromJSON("https://raw.githubusercontent.com/summerscope/summer-child/main/questions.json", flatten = TRUE) %>%
-  mutate(qn_text = text, .keep = "unused")
-
+  url <- "https://github.com/summerscope/summerchildpy/blob/main/questions.json"
+  question_logic <- jsonlite::fromJSON(url, flatten = TRUE) %>%
+    mutate(qn_text = text, .keep = "unused")
+  
   columns_to_numeric <- question_logic %>%
     mutate(across(ends_with("score"), ~ as.numeric(.x)),
            across(ends_with("multiplier"), ~ as.numeric(.x)))

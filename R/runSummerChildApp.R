@@ -16,12 +16,44 @@ runSummerChildApp <- function(){
   server <- function(input, output, session) {
     renderSurvey()
     observeEvent(input$submit, {
+      
+      results <- readRDS("results.RDS")
+      response_data <- getSurveyData()
+      assessment <- response_data %>% 
+        left_join(survey_qns,
+                  by = c("question_id" = "input_id", 
+                         "response" = "option"  )) %>%
+        select(question_id, multiplier, score) %>% 
+        summarise(risk = sum(multiplier, na.rm = TRUE) * sum(score, na.rm = T)) %>%
+        pull(risk)
+      
+      find_score <- results %>%
+        mutate(score = ifelse(assessment > min_score &
+                                assessment <= max_score, T, F)) %>%
+        filter(score %in% T)
+      
+      str1 = tags$span(
+        unlist(find_score$score_interval),
+        style = "font-size: 25px;"
+      )
+      
+      str2 = tags$span(
+        find_score$title,
+        style = "font-size: 32px"
+      )
+      str3 = tags$span(
+        find_score$description,
+        style = "font-size:16px;font-weight:bold;color:blue"
+      )
+      
       showModal(modalDialog(
-        title = "Congrats, you completed your first shinysurvey!",
-        "You can customize what actions happen when a user finishes a survey using input$submit."
+        title =  paste('Your score is ', assessment),
+        tagList(str1, br(), str2, br(), str3)
       ))
+      
     })
   }
+  
 
   shinyApp(ui, server)
 
