@@ -9,14 +9,18 @@ output:
 
 ## From RStudio
 
-```
-devtools::install_github("summerscope/summer-child-r")
+**Install and load the R package**
 
+```{r eval=FALSE}
+devtools::install_github("summerscope/summer-child-r")
 library(SummerChildR)
 ```
 
-1. Clone this repo:
+**Run the app**
 
+```{r eval=FALSE}
+shiny::runApp(runSummerChildApp())
+```
 
 
 ## From the terminal
@@ -24,3 +28,5 @@ library(SummerChildR)
 ```
 make run
 ```
+
+And click on the `http` link that appears in the terminal.
