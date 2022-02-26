@@ -12,8 +12,8 @@ README
 **Install and load the R package**
 
 ``` r
-devtools::install_github("summerscope/summer-child-r")
-library(SummerChildR)
+devtools::install_github("summerscope/summerchildr")
+library(summerchildr)
 ```
 
 **Run the app**
