@@ -1,6 +1,6 @@
 Package: summerchildr
 Title: Risk Assessment Quiz For Automation and ML
-Version: 0.1.0
+Version: 0.2.0
 Authors@R: c(
     person("Gizem Evie", "Eker" , email="gizemevieeker@gmail.com", role = c("aut", "cre")),
     person("Nikki", "Rubinstein" , email="nikki.rubinstein@outlook.com", role = c("aut", "ctb")),
