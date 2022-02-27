@@ -47,6 +47,10 @@ import_questions_logics_to_df <- function(){
                   .keep = "unused") %>%
     tidyr::fill(page) %>% as.data.frame()
   
+  # Temporary fix
+  survey_qns <- survey_qns %>% dplyr::filter(!(input_id %in%  "Q3"))
+  survey_qns$nextq <- ifelse(survey_qns$nextq %in% "Q3", "Q4", survey_qns$nextq)
+    
   return(survey_qns)
 }
 
