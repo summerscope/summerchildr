@@ -23,7 +23,7 @@ import_json_for_shinysurvey <- function(){
   
   # change column names as per shinysurveys
   survey_qns <- questions_to_long %>%
-    dplyr::mutate(input_type = ifelse(Response == "Ok", "instructions", "mc"),
+    dplyr::mutate(input_type = ifelse(tolower(Response) == "ok", "instructions", "mc"),
                   question = stringr::str_replace(qn_text,"To continue, type 'Ok'", ""),
                   option = text,
                   input_id = id,
