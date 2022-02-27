@@ -29,31 +29,38 @@ runSummerChildApp <- function(){
                   by = c("question_id" = "input_id", 
                          "response" = "option"  )) %>%
         select(question_id, multiplier, score) %>% 
-        summarise(risk = sum(multiplier, na.rm = TRUE) * sum(score, na.rm = T)) %>%
+        summarise(risk = 99 - (sum(multiplier, na.rm = TRUE) * sum(score, na.rm = T))) %>%
         pull(risk)
       
       find_score <- results %>%
         mutate(score = ifelse(assessment > min_score &
                                 assessment <= max_score, T, F)) %>%
         filter(score %in% T)
+      str0 = tags$span(
+        assessment,
+        style = "font-size: 44px;"
+      )
       
       str1 = tags$span(
-        unlist(find_score$score_interval),
+        paste0(find_score$title," [", find_score$score_interval, "]"),
+        
         style = "font-size: 25px;"
       )
       
-      str2 = tags$span(
-        find_score$title,
-        style = "font-size: 32px"
-      )
+      # str2 = tags$span(
+      #   find_score$title,
+      #   style = "font-size: 25px"
+      # )
       str3 = tags$span(
         find_score$description,
-        style = "font-size:16px;font-weight:bold;color:blue"
+        style = "font-size:16px;font-weight:bold"
       )
       
       showModal(modalDialog(
-        title =  paste('Your score is ', assessment),
-        tagList(str1, br(), str2, br(), str3)
+        title =  'Your sweet summer child score is:',
+        tagList(str0, br(), str1, br(), 
+                # str2, br(),
+                str3)
       ))
       
     })
