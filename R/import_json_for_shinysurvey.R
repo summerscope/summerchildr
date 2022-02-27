@@ -1,25 +1,34 @@
 #' Load file with risk assessment logics from https://github.com/summerscope/summerchildpy/blob/main/questions.json 
-#' and parse into the input format required for `shinysurveys`.  
+#' and parse into (1) the input format required for `shinysurveys` and the survey result categorisation.  
 
 import_json_for_shinysurvey <- function(){
   
-  questions_to_long <- import_questions_logics_to_df()
+
+  # Questions ---------------------------------------------------------------
+
+  import_qns <- import_questions_logics()
+  questions_to_long <- convert_questions_logics_to_df(import_qns)
   survey_qns <- format_dependencies_logic(questions_to_long)
+
+
+  # Results -----------------------------------------------------------------
   
-  return(survey_qns)
+  results <- convert_questions_logics_to_results(import_qns)
+    
+  return(list(survey_qns = survey_qns, results = results))
   
 }
 
 
 #' Load file with risk assessment logics from https://github.com/summerscope/summerchildpy/blob/main/questions.json 
-#' and format into dataframe required for `shinysurveys`.  
 #' 
 #' @import dplyr
-#' @import tidyr
 #' @importFrom jsonlite fromJSON
 
-import_questions_logics_to_df <- function(){
-  # Question logic ----------------------------------------------------------
+import_questions_logics <- function(){
+  
+  # Read in json data ----------------------------------------------------------
+  
   url <- "https://raw.githubusercontent.com/summerscope/summer-child/main/questions.json"
   question_logic <- jsonlite::fromJSON(url, flatten = TRUE) %>%
     dplyr::mutate(qn_text = text, .keep = "unused")
@@ -28,7 +37,20 @@ import_questions_logics_to_df <- function(){
     dplyr::mutate(dplyr::across(dplyr::ends_with("score"), ~ as.numeric(.x)),
                   dplyr::across(dplyr::ends_with("multiplier"), ~ as.numeric(.x)))
   
+  return(columns_to_numeric)
+}
+
+#' Format survey questions from json file into data frame required for `shinysurveys`.  
+#' 
+#' @import dplyr
+#' @import tidyr
+#' @import stringr
+
+convert_questions_logics_to_df <- function(columns_to_numeric){
+  # Question logic ----------------------------------------------------------
+  
   questions_to_long <- columns_to_numeric %>%
+    dplyr::select(- tidyr::starts_with("Result")) %>%
     tidyr::pivot_longer(cols = starts_with("answers"),
                         names_to = c("Response", ".value"),
                         names_pattern = "answers\\.(\\w+)\\.(\\w+)"
@@ -50,8 +72,33 @@ import_questions_logics_to_df <- function(){
   # Temporary fix
   survey_qns <- survey_qns %>% dplyr::filter(!(input_id %in%  "Q3"))
   survey_qns$nextq <- ifelse(survey_qns$nextq %in% "Q3", "Q4", survey_qns$nextq)
-    
+  
   return(survey_qns)
+}
+
+#' Format survey results from json file into data frame.  
+#' 
+#' @import dplyr
+#' @import tidyr
+
+convert_questions_logics_to_results <- function(columns_to_numeric){
+  # Results logic -----------------------------------------------------------
+
+  results <- columns_to_numeric %>% 
+    dplyr::filter(tolower(id) == "results") %>%
+    dplyr::select(tidyr::starts_with("result")) %>%
+    tidyr::pivot_longer(cols = starts_with("result"),
+                        names_to = c("Result", ".value"),
+                        names_pattern = "results\\.T(\\w+)\\.(\\w+)"
+    )  %>%
+    dplyr::filter(!is.na(text)) %>%
+    dplyr::rename(score_interval = range, description = text) %>%
+    dplyr::mutate(score_interval_to_split = score_interval) %>%
+    tidyr::separate(score_interval_to_split, c("min_score", "max_score")) %>%
+    dplyr::mutate(min_score = as.numeric(min_score) - 1) %>% ### Fix for current results where min and max are not the same for consecutive intervals
+    dplyr::select(-Result)
+    
+  return(results)
 }
 
 #' Given an input data frame formatted with the columns names required for `shinysurvey`, add 
