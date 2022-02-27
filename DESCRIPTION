@@ -1,9 +1,10 @@
 Package: summerchildr
 Title: Risk Assessment Quiz For Automation and ML
-Version: 0.0.0.9000
+Version: 0.1.0
 Authors@R: 
-    person("First", "Last", , "first.last@example.com", role = c("aut", "cre"),
-           comment = c(ORCID = "YOUR-ORCID-ID"))
+    person("Gizem Evie", "Eker" , "gizemevieeker@gmail.com", role = c("aut", "cre")),
+    person("Nikki", "Rubinstein" , "nikki.rubinstein@outlook.com", role = c("aut", "cre")),
+    person("Anna", "Quaglieri" , "anna.quaglieri16@gmail.com", role = c("aut", "cre"))
 Description: Sweet Summer Child Score (SSCS) is a scoring mechanism for latent risk. It will help you quickly and efficiently scan for the possibility of harm to people and communities by a socio-technical system. This package is an R version of Python code found at: https://github.com/summerscope/summerchildpy
 License: `use_agpl_license(version = 3, include_future = TRUE)`
 Encoding: UTF-8
