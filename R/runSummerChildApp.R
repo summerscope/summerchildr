@@ -21,7 +21,6 @@ runSummerChildApp <- function(){
   server <- function(input, output, session) {
     renderSurvey()
     observeEvent(input$submit, {
-      
       results <- readRDS("data-raw/results.RDS")
       response_data <- getSurveyData()
       assessment <- response_data %>% 
@@ -31,6 +30,14 @@ runSummerChildApp <- function(){
         select(question_id, multiplier, score) %>% 
         summarise(risk = 99 - (sum(multiplier, na.rm = TRUE) * sum(score, na.rm = T))) %>%
         pull(risk)
+      
+      recs <- response_data %>% 
+        left_join(survey_qns,
+                  by = c("question_id" = "input_id", 
+                         "response" = "option"  )) %>%
+        select(recommendation) %>% 
+        filter(!(is.na(recommendation)) & !recommendation %in% "" ) 
+      recs <- paste(recs$recommendation , sep = "\n")
       
       find_score <- results %>%
         mutate(score = ifelse(assessment > min_score &
@@ -43,24 +50,27 @@ runSummerChildApp <- function(){
       
       str1 = tags$span(
         paste0(find_score$title," [", find_score$score_interval, "]"),
-        
         style = "font-size: 25px;"
       )
       
-      # str2 = tags$span(
-      #   find_score$title,
-      #   style = "font-size: 25px"
-      # )
       str3 = tags$span(
         find_score$description,
         style = "font-size:16px;font-weight:bold"
       )
       
+      str4 = tags$span(
+        "Recommendations for improving your score:",
+        style = "font-size:14px"
+      )
+      
+      str5 = tags$span(
+        paste(recs, collapse = "\n"),
+        style = "font-size:14px"
+      )
       showModal(modalDialog(
         title =  'Your sweet summer child score is:',
-        tagList(str0, br(), str1, br(), 
-                # str2, br(),
-                str3)
+        tagList(str0, br(), str1, br(),
+                str3, br(), str4, br(), str5)
       ))
       
     })
