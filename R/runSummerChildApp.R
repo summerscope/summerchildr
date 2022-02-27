@@ -1,13 +1,16 @@
 
 #' @import shinysurveys
 #' @import shiny
+#' @import dplyr
 #' @export runSummerChildApp
 
 runSummerChildApp <- function(){
 
   # Import survey questions -------------------------------------------------
 
-  survey_qns <- import_json_for_shinysurvey()
+  json_output <- import_json_for_shinysurvey()   
+  survey_qns <- json_output$survey_qns
+  results <- json_output$results
   
   # Launch survey --------------------------------------------------------------
   
@@ -19,32 +22,31 @@ runSummerChildApp <- function(){
   )
   
   server <- function(input, output, session) {
-    renderSurvey()
-    observeEvent(input$submit, {
-      results <- readRDS("../data-raw/results.RDS")
-      response_data <- getSurveyData()
+    shinysurveys::renderSurvey()
+    shiny::observeEvent(input$submit, {
+      response_data <- shinysurveys::getSurveyData()
       assessment <- response_data %>% 
-        left_join(survey_qns,
+        dplyr::left_join(survey_qns,
                   by = c("question_id" = "input_id", 
                          "response" = "option"  )) %>%
-        select(question_id, multiplier, score) %>% 
-        summarise(risk = 99 - (sum(multiplier, na.rm = TRUE) * sum(score, na.rm = T))) %>%
-        pull(risk)
+        dplyr::select(question_id, multiplier, score) %>% 
+        dplyr::summarise(risk = 99 - (sum(multiplier, na.rm = TRUE) * sum(score, na.rm = T))) %>%
+        dplyr::pull(risk)
       
       recs <- response_data %>% 
-        left_join(survey_qns,
+        dplyr::left_join(survey_qns,
                   by = c("question_id" = "input_id", 
                          "response" = "option"  )) %>%
-        select(recommendation) %>% 
-        filter(!(is.na(recommendation)) & !recommendation %in% "" ) 
+        dplyr::select(recommendation) %>% 
+        dplyr::filter(!(is.na(recommendation)) & !recommendation %in% "" ) 
       recs <- ifelse(nrow(recs) == 0,
                      "No recommendations at this stage",
                      paste(recs$recommendation , sep = "\n"))
       
       find_score <- results %>%
-        mutate(score = ifelse(assessment > min_score &
+        dplyr::mutate(score = ifelse(assessment > min_score &
                                 assessment <= max_score, T, F)) %>%
-        filter(score %in% T)
+        dplyr::filter(score %in% T)
       str0 = tags$span(
         "Your sweet summer child score is:    ",
         style = "font-size: 25px;"
@@ -72,7 +74,7 @@ runSummerChildApp <- function(){
         p(HTML(paste("<ul><li>", paste(recs, collapse = "</li><li>"), "</li>"))),
         style = "font-size:16px"
       )
-      showModal(modalDialog(
+      shiny::showModal(shiny::modalDialog(
         title =  'Results',
         tagList(str0, str1, br(), br(), hr(),br(), str2, br(), br(),
                 str3, br(), br(), hr(),br(), str4, str5)
@@ -81,7 +83,7 @@ runSummerChildApp <- function(){
     })
   }
   
-  shinyApp(ui, server)
+  shiny::shinyApp(ui, server)
 
 }
 
