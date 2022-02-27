@@ -21,7 +21,7 @@ runSummerChildApp <- function(){
   server <- function(input, output, session) {
     renderSurvey()
     observeEvent(input$submit, {
-      results <- readRDS("data-raw/results.RDS")
+      results <- readRDS("../data-raw/results.RDS")
       response_data <- getSurveyData()
       assessment <- response_data %>% 
         left_join(survey_qns,
