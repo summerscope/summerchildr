@@ -46,7 +46,7 @@ shiny::runApp(runSummerChildApp())
 Run the following code in a terminal window - **Requires R (>= 2.10) to be installed**
 
 ```
-R -e "devtools::install_github('summerscope/summer-child-r', force = TRUE);library(summerchildr); shiny::runApp(runSummerChildApp())"
+R -e "devtools::install_github('summerscope/summer-child-r', force = TRUE); library(summerchildr); runSummerChildApp()"
 ```
 
 Click on the `http` link that appears in the terminal.
