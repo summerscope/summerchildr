@@ -48,7 +48,8 @@ to be installed**
 
     R -e "devtools::install_github('summerscope/summer-child-r', force = TRUE); library(summerchildr); runSummerChildApp()"
 
-Click on the `http` link that appears in the terminal.
+Then simply copy and paste the `http` link that appears in the terminal
+into a browser.
 
 ## FAQ: If you’re having issues with R packages installation
 
