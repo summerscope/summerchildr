@@ -7,8 +7,8 @@ README
     system](#run-summer-summer-child-app-to-assess-the-risk-of-your-socio-technical-system)
     -   [1. From RStudio](#1-from-rstudio)
     -   [2. From the terminal](#2-from-the-terminal)
-    -   [FAQ: If you’re having issues with R package
-        installation](#faq-if-youre-having-issues-with-r-package-installation)
+    -   [FAQ: If you’re having issues with R packages
+        installation](#faq-if-youre-having-issues-with-r-packages-installation)
 
 # Sweet Summer Child Score
 
@@ -43,7 +43,9 @@ Run the following code - Requires R to be installed
 
     R -e "devtools::install_github('summerscope/summer-child-r', force = TRUE);library(summerchildr); shiny::runApp(runSummerChildApp())"
 
-## FAQ: If you’re having issues with R package installation
+Click on the `http` link that appears in the terminal.
+
+## FAQ: If you’re having issues with R packages installation
 
 1.  Clone the repository
 
@@ -52,8 +54,11 @@ Run the following code - Requires R to be installed
     git clone git@github.com:summerscope/summerchildr.git
     cd summerchildr
 
-2.  Run the app after restoring the environment:
+2.  Run the app in the terminal after restoring the environment:
 
 <!-- -->
 
     R -e "renv::restore(); library(summerchildr); shiny::runApp(runSummerChildApp())"
+
+The same commands in the chunk above can be run in R Studio to restore
+the environment before running the app.

@@ -37,7 +37,9 @@ Run the following code - Requires R to be installed
 R -e "devtools::install_github('summerscope/summer-child-r', force = TRUE);library(summerchildr); shiny::runApp(runSummerChildApp())"
 ```
 
-## FAQ: If you're having issues with R package installation
+Click on the `http` link that appears in the terminal.
+
+## FAQ: If you're having issues with R packages installation
 
 1. Clone the repository
 
@@ -46,10 +48,10 @@ git clone git@github.com:summerscope/summerchildr.git
 cd summerchildr
 ```
 
-2. Run the app after restoring the environment:
+2. Run the app in the terminal after restoring the environment:
 
 ```
 R -e "renv::restore(); library(summerchildr); shiny::runApp(runSummerChildApp())"
 ```
 
-
+The same commands in the chunk above can be run in R Studio to restore the environment before running the app.
