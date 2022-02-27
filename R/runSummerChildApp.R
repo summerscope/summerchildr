@@ -37,40 +37,45 @@ runSummerChildApp <- function(){
                          "response" = "option"  )) %>%
         select(recommendation) %>% 
         filter(!(is.na(recommendation)) & !recommendation %in% "" ) 
-      recs <- paste(recs$recommendation , sep = "\n")
+      recs <- ifelse(nrow(recs) == 0,
+                     "No recommendations at this stage",
+                     paste(recs$recommendation , sep = "\n"))
       
       find_score <- results %>%
         mutate(score = ifelse(assessment > min_score &
                                 assessment <= max_score, T, F)) %>%
         filter(score %in% T)
       str0 = tags$span(
-        assessment,
-        style = "font-size: 44px;"
+        "Your sweet summer child score is:    ",
+        style = "font-size: 25px;"
       )
+      str1 <- tags$span(
+        assessment,
+        style = "font-size: 44px;")
       
-      str1 = tags$span(
+      str2 = tags$span(
         paste0(find_score$title," [", find_score$score_interval, "]"),
         style = "font-size: 25px;"
       )
       
       str3 = tags$span(
         find_score$description,
-        style = "font-size:16px;font-weight:bold"
+        style = "font-size:16px"
       )
       
       str4 = tags$span(
         "Recommendations for improving your score:",
-        style = "font-size:14px"
+        style = "font-size:25px"
       )
       
       str5 = tags$span(
-        paste(recs, collapse = "\n"),
-        style = "font-size:14px"
+        p(HTML(paste("<ul><li>", paste(recs, collapse = "</li><li>"), "</li>"))),
+        style = "font-size:16px"
       )
       showModal(modalDialog(
-        title =  'Your sweet summer child score is:',
-        tagList(str0, br(), str1, br(),
-                str3, br(), str4, br(), str5)
+        title =  'Results',
+        tagList(str0, str1, br(), br(), hr(),br(), str2, br(), br(),
+                str3, br(), br(), hr(),br(), str4, str5)
       ))
       
     })
