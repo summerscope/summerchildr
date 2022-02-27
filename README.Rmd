@@ -12,6 +12,8 @@ output:
 **Install and load the R package**
 
 ```{r eval=FALSE}
+if(!require(devtools,quietly = TRUE))
+  install.packages("devtools")
 devtools::install_github("summerscope/summerchildr")
 library(summerchildr)
 ```

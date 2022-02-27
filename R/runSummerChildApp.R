@@ -5,19 +5,24 @@
 
 runSummerChildApp <- function(){
 
-  survey_qns <- import_json_for_shinysurvey()
-  # Launch survey --------------------------------------------------------------
-  ui <- fluidPage(
-    surveyOutput(df = survey_qns,
-                 survey_title = "Sweet Summer Child Score (SSCS)",
-                 survey_description = "SSCS is a scoring mechanism for latent risk. It will help you quickly and efficiently scan for the possibility of harm to people and communities by a socio-technical system. Note that harms to animals and the environment are not considered.")
-  )
+  # Import survey questions -------------------------------------------------
 
+  survey_qns <- import_json_for_shinysurvey()
+  
+  # Launch survey --------------------------------------------------------------
+  
+  ui <- shiny::fluidPage(
+    shinysurveys::surveyOutput(df = survey_qns,
+                               survey_title = "Sweet Summer Child Score (SSCS)",
+                               survey_description = "SSCS is a scoring mechanism for latent risk. It will help you quickly and efficiently scan for the possibility of harm to people and communities by a socio-technical system. Note that harms to animals and the environment are not considered.
+               Please note that all questions are mandatory and you will not be able to submit the survey if there are questions left uncompleted.")
+  )
+  
   server <- function(input, output, session) {
     renderSurvey()
     observeEvent(input$submit, {
       
-      results <- readRDS("results.RDS")
+      results <- readRDS("data-raw/results.RDS")
       response_data <- getSurveyData()
       assessment <- response_data %>% 
         left_join(survey_qns,
@@ -54,7 +59,6 @@ runSummerChildApp <- function(){
     })
   }
   
-
   shinyApp(ui, server)
 
 }
