@@ -4,7 +4,7 @@
 import_json_for_shinysurvey <- function(){
   
   questions_to_long <- import_questions_logics_to_df()
-  survey_qns <- format_dependencie_logic(questions_to_long)
+  survey_qns <- format_dependencies_logic(questions_to_long)
   
   return(survey_qns)
   
