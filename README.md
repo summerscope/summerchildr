@@ -39,7 +39,8 @@ shiny::runApp(runSummerChildApp())
 
 ## 2. From the terminal
 
-Run the following code - Requires R to be installed
+Run the following code in a terminal window - **Requires R (&gt;= 2.10)
+to be installed**
 
     R -e "devtools::install_github('summerscope/summer-child-r', force = TRUE);library(summerchildr); shiny::runApp(runSummerChildApp())"
 
