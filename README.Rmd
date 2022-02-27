@@ -15,7 +15,7 @@ Sweet Summer Child Score (SSCS) is a scoring mechanism for latent risk. It will 
 
 How it looks like when you run it.
 
-```{r echo=FALSE,message=FALSE,fig.width=5,fig.height=5,fig.align='center',cache=TRUE}
+```{r echo=FALSE,message=FALSE,fig.width=5,fig.height=5,fig.align='center',cache=TRUE, fig.asp=0.50}
 library(png)
 library(grid)
 img <- readPNG("data-raw/app.png")
