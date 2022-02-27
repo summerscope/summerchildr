@@ -5,11 +5,23 @@ output:
     toc: yes
 ---
 
+
+
 # Sweet Summer Child Score
 
 Sweet Summer Child Score (SSCS) is a scoring mechanism for latent risk. It will help you quickly and efficiently scan for the possibility of harm to people and communities by a socio-technical system. This package is an R version of Python code found at: https://github.com/summerscope/summerchildpy
 
 # Run Summer Summer Child app to assess the risk of your socio-technical system
+
+How it looks like when you run it.
+
+```{r echo=FALSE,message=FALSE,fig.width=5,fig.height=5,fig.align='center',cache=TRUE}
+library(png)
+library(grid)
+img <- readPNG("data-raw/app.png")
+grid.raster(img)
+```
+
 
 ## 1. From RStudio
 

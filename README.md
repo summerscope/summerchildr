@@ -20,6 +20,10 @@ is an R version of Python code found at:
 
 # Run Summer Summer Child app to assess the risk of your socio-technical system
 
+How it looks like when you run it.
+
+<img src="README_files/figure-gfm/unnamed-chunk-1-1.png" style="display: block; margin: auto;" />
+
 ## 1. From RStudio
 
 **Install and load the R package**
