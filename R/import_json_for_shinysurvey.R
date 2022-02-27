@@ -62,7 +62,7 @@ convert_questions_logics_to_df <- function(columns_to_numeric){
                   question = stringr::str_replace(qn_text,"To continue, type 'Ok'", ""),
                   option = text,
                   input_id = id,
-                  required = FALSE,
+                  required = TRUE,
                   dependence = NA,
                   dependence_value = NA,
                   page = stringr::str_extract(question, "Section #[0-9]+"),
