@@ -1,13 +1,29 @@
-#' @import dplyr
-#' @import tidyr
-#' @import stringr
+#' Load file with risk assessment logics from https://github.com/summerscope/summerchildpy/blob/main/questions.json 
+#' and parse into the input format required for `shinysurveys`.  
 
 import_json_for_shinysurvey <- function(){
   
+  questions_to_long <- import_questions_logics_to_df()
+  survey_qns <- format_dependencie_logic(questions_to_long)
+  
+  return(survey_qns)
+  
+}
+
+
+#' Load file with risk assessment logics from https://github.com/summerscope/summerchildpy/blob/main/questions.json 
+#' and format into dataframe required for `shinysurveys`.  
+#' 
+#' @import dplyr
+#' @import tidyr
+#' @importFrom jsonlite fromJSON
+
+import_questions_logics_to_df <- function(){
   # Question logic ----------------------------------------------------------
   url <- "https://raw.githubusercontent.com/summerscope/summer-child/main/questions.json"
   question_logic <- jsonlite::fromJSON(url, flatten = TRUE) %>%
     dplyr::mutate(qn_text = text, .keep = "unused")
+  
   columns_to_numeric <- question_logic %>%
     dplyr::mutate(dplyr::across(dplyr::ends_with("score"), ~ as.numeric(.x)),
                   dplyr::across(dplyr::ends_with("multiplier"), ~ as.numeric(.x)))
@@ -19,9 +35,6 @@ import_json_for_shinysurvey <- function(){
     ) %>%
     dplyr::filter (!is.na(text))
   
-  # Create required data structure for survey ---------------------------------------------------------
-  
-  # change column names as per shinysurveys
   survey_qns <- questions_to_long %>%
     dplyr::mutate(input_type = ifelse(tolower(Response) == "ok", "instructions", "mc"),
                   question = stringr::str_replace(qn_text,"To continue, type 'Ok'", ""),
@@ -34,8 +47,16 @@ import_json_for_shinysurvey <- function(){
                   .keep = "unused") %>%
     tidyr::fill(page) %>% as.data.frame()
   
-  # Dependency logic --------------------------------------------------------
-  
+  return(survey_qns)
+}
+
+#' Given an input data frame formatted with the columns names required for `shinysurvey`, add 
+#' questions dependencies. 
+#' 
+#' @import stringr
+#' @import dplyr
+
+format_dependencies_logic <- function(survey_qns){
   # determine questions with dependencies
   qns_with_dependencies <- survey_qns %>%
     dplyr::select(input_id, nextq) %>%
@@ -72,7 +93,7 @@ import_json_for_shinysurvey <- function(){
                                   dependence_value)
       )
   }
-  
   return(survey_qns)
-  
 }
+
+
