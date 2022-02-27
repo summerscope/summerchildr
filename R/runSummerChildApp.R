@@ -1,4 +1,5 @@
-
+#' Load questions and results categorisation from JSON file, run survey and then present results and recommendations based on survey responses
+#' 
 #' @import shinysurveys
 #' @import shiny
 #' @import dplyr
