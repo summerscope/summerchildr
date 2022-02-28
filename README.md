@@ -7,8 +7,8 @@ README
     system](#run-summer-summer-child-app-to-assess-the-risk-of-your-socio-technical-system)
     -   [1. From RStudio](#1-from-rstudio)
     -   [2. From the terminal](#2-from-the-terminal)
-    -   [FAQ: If you’re having issues with R packages
-        installation](#faq-if-youre-having-issues-with-r-packages-installation)
+    -   [3. If you’re having issues with remote R packages
+        installation](#3-if-youre-having-issues-with-remote-r-packages-installation)
 
 # Sweet Summer Child Score
 
@@ -51,9 +51,7 @@ to be installed**
 Then simply copy and paste the `http` link that appears in the terminal
 into a browser.
 
-# Debugging
-
-## If you’re having issues with R packages installation
+## 3. If you’re having issues with remote R packages installation
 
 1.  Clone the repository
 

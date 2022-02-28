@@ -51,7 +51,7 @@ R -e "devtools::install_github('summerscope/summer-child-r', force = TRUE); libr
 
 Then simply copy and paste the `http` link that appears in the terminal into a browser. 
 
-## FAQ: If you're having issues with R packages installation
+## 3. If you're having issues with remote R packages installation
 
 1. Clone the repository
 
@@ -67,3 +67,4 @@ R -e "renv::restore(); library(summerchildr); shiny::runApp(runSummerChildApp())
 ```
 
 The same commands in the chunk above can be run in R Studio to restore the environment before running the app.
+
