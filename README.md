@@ -51,7 +51,9 @@ to be installed**
 Then simply copy and paste the `http` link that appears in the terminal
 into a browser.
 
-## FAQ: If you’re having issues with R packages installation
+# Debugging
+
+## If you’re having issues with R packages installation
 
 1.  Clone the repository
 
